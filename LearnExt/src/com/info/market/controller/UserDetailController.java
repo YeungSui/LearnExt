@@ -40,4 +40,9 @@ public class UserDetailController {
 		modelMap.put("jsID","ext-all");
 		modelMap.put("jsName", "ext-all.js");
 	}
+	@RequestMapping("/user/getuserdetailslist")
+	public String getUserDetailsList() {
+		List<UserDetails> userList = userDetailsService.getUserList();
+		return userList;
+	}
 }

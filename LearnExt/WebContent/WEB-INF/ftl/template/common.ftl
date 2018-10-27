@@ -1,4 +1,4 @@
-<#macro shared title cssList jsList>
+<#macro shared title cssList jsList prioJsList>
 	<#global prefix="${request.contextPath}">
 	<#global iconPath="${prefix}/image/icon">
 	<!DOCTYPE html PUBLIC="-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhml1/DTD/xhtml1-transitional.dtd">
@@ -15,9 +15,12 @@
 		</#list>
 		
 		<script>
-			document.write("<script id=\"ext-base.js\" src=\"${prefix}/widget/extjs/adapter/ext/ext-base.js\"></script" + ">");
-			document.write("<script id=\"ext-all.js\" src=\"${prefix}/widget/extjs/ext-all.js\"></script" + ">");
+			document.write("<script id=\"ext-base.js\" src=\"${prefix}/widget/extjs/adapter/ext/ext-base-debug.js\"></script" + ">");
+			document.write("<script id=\"ext-all.js\" src=\"${prefix}/widget/extjs/ext-all-debug-w-comments.js\"></script" + ">");
 			document.write("<script id=\"jquery.min.js\" src=\"${prefix}/widget/jquery.min.js\"></script" + ">");
+			<#list prioJsList as prioJs>
+			document.write("<script id=\"${prioJs}\" src=\"${prefix}/js/${prioJs}\"></script" + ">");
+			</#list>
 		</script>
 	</head>
 	
@@ -34,6 +37,7 @@
 		<script>
 			var rootPath = '${request.contextPath}';
 		</script>
+		
 		<!--此处嵌入模板自定义的内容-->
 		<#nested/>
 		<!--jsList里所有自定义的js可以放在最后加载-->
