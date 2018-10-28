@@ -1,5 +1,7 @@
 package com.info.market.controller;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.info.market.service.UserDetailsService;
 import com.info.market.model.UserDetails;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @RequestMapping("/test")
@@ -27,8 +31,7 @@ public class UserDetailController {
 	}
 	@RequestMapping("/showuserdetails")
 	public void showUserDetails(ModelMap modelMap){
-		List<UserDetails> userList = userDetailsService.getUserList();
-		modelMap.put("userlist",userList);
+		
 	}
 	@RequestMapping(value="/saveuserdetails", method=RequestMethod.GET)
 	public String saveUserDetails(String name, String description) {
@@ -41,8 +44,18 @@ public class UserDetailController {
 		modelMap.put("jsName", "ext-all.js");
 	}
 	@RequestMapping("/user/getuserdetailslist")
+	@ResponseBody
 	public String getUserDetailsList() {
 		List<UserDetails> userList = userDetailsService.getUserList();
-		return userList;
+		ObjectMapper om = new ObjectMapper();
+		String result = "";
+		System.out.println("start fetching user data");
+		try{
+			result = om.writeValueAsString(userList);
+			System.out.println(result);
+		} catch(JsonProcessingException jpe) {
+			jpe.printStackTrace();
+		}
+		return result;
 	}
 }
