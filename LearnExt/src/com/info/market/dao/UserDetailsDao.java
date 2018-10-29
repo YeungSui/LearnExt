@@ -2,70 +2,81 @@ package com.info.market.dao;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Query;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import com.info.market.format.FormatDataUtil;
 import com.info.market.model.GoodsDetails;
 import com.info.market.model.OrderDetails;
 import com.info.market.model.UserDetails;
+import com.info.market.service.UserDetailsService;
+import com.sun.org.apache.bcel.internal.generic.Select;
 
 @Repository
 public class UserDetailsDao {
 	
-	private Configuration cfg = null;
-
-	private SessionFactory sf = null;
-	public UserDetailsDao() {
-		cfg = new Configuration().addAnnotatedClass(UserDetails.class)
-		.addAnnotatedClass(OrderDetails.class)
-		.addAnnotatedClass(GoodsDetails.class)
-		.setProperty("hibernate.connection.driver_class", "oracle.jdbc.driver.OracleDriver")
-		.setProperty("hibernate.connection.url","jdbc:oracle:thin:@localhost:1521:xe")
-		.setProperty("hibernate.connection.username", "gguser")
-		.setProperty("hibernate.connection.password", "hugo").
-		setProperty("hibernate.dialect", "org.hibernate.dialect.OracleDialect")
-		.setProperty("hibernate.hbm2ddl.auto","update")
-		.setProperty("hibernate.show_sql", "true");
-		sf = cfg.buildSessionFactory();
-	}
-	// ��ȡ�û��б�
+	@Autowired
+	@Qualifier("entityManagerFactory")
+	private EntityManagerFactory emFactory;
+	@PersistenceContext
+	private EntityManager em;
+	
+	/* 获取用户列表 */
 	public List getUserList() {
-		Transaction trans = null;
 		List<UserDetails> userList = null;
 		try{
-			Session session = sf.openSession();
-			trans = session.beginTransaction();
-			Query query = session.createQuery("from UserDetails order by uid desc");
-			userList = query.list();
-			trans.commit();
-			session.close();
+			Query query = em.createQuery("select * from UserDetails order by uid desc");
+			userList = query.getResultList();
+			em.clear();
 		} catch(Exception e) {
-			trans.rollback();
 			e.printStackTrace();
 		}
 		return userList;
 	}
-	// �����û�
+	/* 添加用户信息 */
 	public String addUserDetails(UserDetails ud) {
-		Transaction trans = null;
 		String result = "";
 		try {
-			Session session = sf.openSession();
-			trans = session.beginTransaction();
-			Serializable id = session.save(ud);
-			trans.commit();
-			session.close();
-			result = ((BigDecimal)id).toString();
+			em.persist(ud);
+			result = ud.getUid().toString();
+			em.clear();
 		} catch(Exception e) {
-			trans.rollback();
 			e.printStackTrace();
 		}
 		return result;
+	}
+	/* 自定义用户列表（指定返回字段）
+	 * @param fields Specify fields to be obtained
+	 * @return user list with specified fields
+	 */
+	/*private List getCustomizedUserList(String[] fields) {
+		return (List<Object[]>)em.createQuery(FormatDataUtil.getSelectAllStatement(fields, "UserDetails")).getResultList();
+	}*/
+	/* 获取不包含订单信息的所有用户信息
+	 * @return user list without order info
+	 */
+	public List getUserListWithoutOrderDetails() {
+		List<UserDetails> userList = null;
+		Query query = em.createQuery("select u from UserDetails u", UserDetails.class);
+		userList = query.getResultList();
+		em.clear();
+		for (UserDetails user:userList){
+			user.setOrderDetailses(null);
+		}
+		return userList;
 	}
 }

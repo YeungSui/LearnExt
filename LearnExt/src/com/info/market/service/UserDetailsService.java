@@ -5,6 +5,7 @@ import java.util.List;
 import com.info.market.dao.UserDetailsDao;
 import com.info.market.format.FormatDataUtil;
 import com.info.market.model.*;
+import com.sun.corba.se.spi.orb.StringPair;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -22,10 +23,13 @@ public class UserDetailsService {
 	private UserDetailsDao userDetailsDao;
 	
 	public void addUser(UserDetails ud) {
-		System.out.println("生成的id值: "+userDetailsDao.addUserDetails(ud));
+		System.out.println("鏂板鐢ㄦ埛id: "+userDetailsDao.addUserDetails(ud));
 	}
 	public List getUserList() {
 		return userDetailsDao.getUserList();
+	}
+	public List getUserListWithoutOrderDetails() {
+		return userDetailsDao.getUserListWithoutOrderDetails();
 	}
 	public void addUser(String name, String description) {
 		System.out.println("this is the test info of FormatDataUtil");

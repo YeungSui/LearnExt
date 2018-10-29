@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.info.market.service.UserDetailsService;
+import com.info.market.format.FormatDataUtil;
 import com.info.market.model.UserDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,8 +44,21 @@ public class UserDetailController {
 		modelMap.put("jsID","ext-all");
 		modelMap.put("jsName", "ext-all.js");
 	}
+	// ajax获取用户列表
 	@RequestMapping("/getuserdetailslist")
-	public void getUserDetailsList(ModelMap modelMap) {
+	@ResponseBody
+	public String getUserDetailsList(ModelMap modelMap) {
 		System.out.println("go into getuserdetailslist");
+		List<UserDetails> userList = userDetailsService.getUserListWithoutOrderDetails();
+		System.out.println("number of user details records: " + userList.size());
+		ObjectMapper om = new ObjectMapper();
+		String result = "";
+		try{
+			result = om.writeValueAsString(userList);
+			System.out.println(result);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

@@ -18,6 +18,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 /**
  * UserDetails entity. @author MyEclipse Persistence Tools
  */
@@ -31,6 +34,7 @@ public class UserDetails implements java.io.Serializable {
 	private BigDecimal uid;
 	private String uname;
 	private String udescription;
+	@JsonIgnore
 	private Set<OrderDetails> orderDetailses = new HashSet<OrderDetails>(0);
 
 	// Constructors
