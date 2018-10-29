@@ -6,7 +6,7 @@ Ext.namespace("market.userdetails");
 
 market.userdetails.UserDetailsGrid = Ext.extend(Ext.grid.GridPanel, {
 	constructor: function(cfg) {
-		var url = rootPath+"/test/user/getuserdetailslist";
+		var url = rootPath+"/test/getuserdetailslist";
 		var fields = [{name:'id',type:'int'},'name','description'];
 		// Define row data model
 		/*var record = Ext.data.Record.create([

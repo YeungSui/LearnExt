@@ -31,7 +31,7 @@ public class UserDetailController {
 	}
 	@RequestMapping("/showuserdetails")
 	public void showUserDetails(ModelMap modelMap){
-		
+		System.out.println("go into showuserdetails");
 	}
 	@RequestMapping(value="/saveuserdetails", method=RequestMethod.GET)
 	public String saveUserDetails(String name, String description) {
@@ -43,19 +43,10 @@ public class UserDetailController {
 		modelMap.put("jsID","ext-all");
 		modelMap.put("jsName", "ext-all.js");
 	}
-	@RequestMapping("/user/getuserdetailslist")
+	@RequestMapping("/getuserdetailslist")
 	@ResponseBody
-	public String getUserDetailsList() {
-		List<UserDetails> userList = userDetailsService.getUserList();
-		ObjectMapper om = new ObjectMapper();
-		String result = "";
-		System.out.println("start fetching user data");
-		try{
-			result = om.writeValueAsString(userList);
-			System.out.println(result);
-		} catch(JsonProcessingException jpe) {
-			jpe.printStackTrace();
-		}
-		return result;
+	public UserDetails getUserDetailsList() {
+		System.out.println("go into getuserdetailslist");
+		return new UserDetails();
 	}
 }
