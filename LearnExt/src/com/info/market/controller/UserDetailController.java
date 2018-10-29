@@ -44,9 +44,7 @@ public class UserDetailController {
 		modelMap.put("jsName", "ext-all.js");
 	}
 	@RequestMapping("/getuserdetailslist")
-	@ResponseBody
-	public UserDetails getUserDetailsList() {
+	public void getUserDetailsList(ModelMap modelMap) {
 		System.out.println("go into getuserdetailslist");
-		return new UserDetails();
 	}
 }
