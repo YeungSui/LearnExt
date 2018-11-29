@@ -1,0 +1,64 @@
+.formOutline{
+	background-color:#38003c;
+}
+.formTable{
+	width:100%;
+	height:auto;
+	overflow:hidden;
+	text-align:center;
+	background-color:#38003c;
+	padding:10px 0 10px 16px;
+}
+.formTitle{
+	width:100%;
+	height:80px;
+	text-align:center;
+	line-height:80px;
+	color:white;
+	font-size:28px;
+	font-weight:bolder;
+}
+.formWrapper{
+	padding:10px 10px 5px 5px;
+	height:30px;
+}
+.formWrapper.Normal {
+	width:786px;
+}
+.formBox{
+	width:100%;
+	height:30px;
+	float:left;
+	margin-top:5px;
+}
+.formBox *{
+	line-height:30px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	font-size:14px;
+	font-family:arial;
+}
+.w250 {
+	width:250px;
+}
+.formLabel{
+	background-color:#ff005a;
+	font-weight:bolder;
+	width:100px;
+	float:left;
+	margin-right:6px;
+	color:white;
+}
+.formField{
+	float:left;
+	width:264px;
+	margin-right:16px;
+	background-color:#04f5ff;
+}
+.nothing{
+	color:#38003c;
+	background-color:#DD0048;
+	background:#04f5ff;
+	font-color:#ff005a;
+}

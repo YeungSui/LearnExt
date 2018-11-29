@@ -1,30 +1,32 @@
 package com.info.market.model;
 
 import java.math.BigDecimal;
-
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 /**
  * PhoneDetails entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "phone_details", schema = "GGUSER")
-@DiscriminatorValue("PHONE")
-public class PhoneDetails extends GoodsDetails implements java.io.Serializable {
+@Table(name = "PHONE_DETAILS", schema = "GGUSER")
+public class PhoneDetails implements java.io.Serializable {
 
 	// Fields
 
-	private Double phscreenSize;
-	private String phcpu;
-	private Double phbatteryCapacity;
+	private BigDecimal goodsId;
+	private GoodsDetails goodsDetails;
+	private String goodsName;
+	private String goodsDescription;
+	private Double goodsPrice;
+	private Double phoneScreenSize;
+	private String phoneCpu;
+	private Double phoneBatteryCapacity;
 
 	// Constructors
 
@@ -33,38 +35,106 @@ public class PhoneDetails extends GoodsDetails implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public PhoneDetails(Double phscreenSize, String phcpu,
-			Double phbatteryCapacity) {
-		this.phscreenSize = phscreenSize;
-		this.phcpu = phcpu;
-		this.phbatteryCapacity = phbatteryCapacity;
+	public PhoneDetails(BigDecimal goodsId, GoodsDetails goodsDetails,
+			String goodsName, Double goodsPrice, Double phoneScreenSize,
+			String phoneCpu, Double phoneBatteryCapacity) {
+		this.goodsId = goodsId;
+		this.goodsDetails = goodsDetails;
+		this.goodsName = goodsName;
+		this.goodsPrice = goodsPrice;
+		this.phoneScreenSize = phoneScreenSize;
+		this.phoneCpu = phoneCpu;
+		this.phoneBatteryCapacity = phoneBatteryCapacity;
 	}
 
-	@Column(name = "phone_screen_size", nullable = false, precision = 126, scale = 0)
-	public Double getPhscreenSize() {
-		return this.phscreenSize;
+	/** full constructor */
+	public PhoneDetails(BigDecimal goodsId, GoodsDetails goodsDetails,
+			String goodsName, String goodsDescription, Double goodsPrice,
+			Double phoneScreenSize, String phoneCpu, Double phoneBatteryCapacity) {
+		this.goodsId = goodsId;
+		this.goodsDetails = goodsDetails;
+		this.goodsName = goodsName;
+		this.goodsDescription = goodsDescription;
+		this.goodsPrice = goodsPrice;
+		this.phoneScreenSize = phoneScreenSize;
+		this.phoneCpu = phoneCpu;
+		this.phoneBatteryCapacity = phoneBatteryCapacity;
 	}
 
-	public void setPhscreenSize(Double phscreenSize) {
-		this.phscreenSize = phscreenSize;
+	// Property accessors
+	@Id
+	@Column(name = "GOODS_ID", unique = true, nullable = false, precision = 38, scale = 0)
+	public BigDecimal getGoodsId() {
+		return this.goodsId;
 	}
 
-	@Column(name = "phone_cpu", nullable = false, length = 256)
-	public String getPhcpu() {
-		return this.phcpu;
+	public void setGoodsId(BigDecimal goodsId) {
+		this.goodsId = goodsId;
 	}
 
-	public void setPhcpu(String phcpu) {
-		this.phcpu = phcpu;
+	@OneToOne(fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn
+	public GoodsDetails getGoodsDetails() {
+		return this.goodsDetails;
 	}
 
-	@Column(name = "phone_battery_capacity", nullable = false, precision = 126, scale = 0)
-	public Double getPhbatteryCapacity() {
-		return this.phbatteryCapacity;
+	public void setGoodsDetails(GoodsDetails goodsDetails) {
+		this.goodsDetails = goodsDetails;
 	}
 
-	public void setPhbatteryCapacity(Double phbatteryCapacity) {
-		this.phbatteryCapacity = phbatteryCapacity;
+	@Column(name = "GOODS_NAME", nullable = false, length = 256)
+	public String getGoodsName() {
+		return this.goodsName;
+	}
+
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
+
+	@Lob
+	@Column(name = "GOODS_DESCRIPTION")
+	public String getGoodsDescription() {
+		return this.goodsDescription;
+	}
+
+	public void setGoodsDescription(String goodsDescription) {
+		this.goodsDescription = goodsDescription;
+	}
+
+	@Column(name = "GOODS_PRICE", nullable = false, precision = 126, scale = 0)
+	public Double getGoodsPrice() {
+		return this.goodsPrice;
+	}
+
+	public void setGoodsPrice(Double goodsPrice) {
+		this.goodsPrice = goodsPrice;
+	}
+
+	@Column(name = "PHONE_SCREEN_SIZE", nullable = false, precision = 126, scale = 0)
+	public Double getPhoneScreenSize() {
+		return this.phoneScreenSize;
+	}
+
+	public void setPhoneScreenSize(Double phoneScreenSize) {
+		this.phoneScreenSize = phoneScreenSize;
+	}
+
+	@Column(name = "PHONE_CPU", nullable = false, length = 256)
+	public String getPhoneCpu() {
+		return this.phoneCpu;
+	}
+
+	public void setPhoneCpu(String phoneCpu) {
+		this.phoneCpu = phoneCpu;
+	}
+
+	@Column(name = "PHONE_BATTERY_CAPACITY", nullable = false, precision = 126, scale = 0)
+	public Double getPhoneBatteryCapacity() {
+		return this.phoneBatteryCapacity;
+	}
+
+	public void setPhoneBatteryCapacity(Double phoneBatteryCapacity) {
+		this.phoneBatteryCapacity = phoneBatteryCapacity;
 	}
 
 }

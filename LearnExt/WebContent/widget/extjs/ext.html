@@ -1,0 +1,140 @@
+<!DOCTYPE html5>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="resources/css/ext-all.css"/>
+	<script type="text/javascript" src="adapter/ext/ext-base-debug.js"></script>
+	<script type="text/javascript" src="ext-all-debug.js"></script>
+	
+</head>
+
+<body>
+	<div id="divid">haha</div>
+	<script>
+		Ext.get('divid').update('kaka');
+		new Ext.tree.TreePanel({
+
+		})
+		func = function() {
+			return {
+				funA: function(a,b) {
+					console.log("you can call a function with arguments by passing nothing");
+				}
+			}
+		}();
+		func.funA();
+		func = function() {
+			var selectId = null;
+			return {
+				setSelectId:function(pid){
+					selectId = pid;
+				},
+				getSelectId:function() {
+					return selectId;
+				}
+			}
+		}();
+		Ext.namespace('com.info');
+		com.info.Cust = Ext.extend(Ext.Window,{
+			cmpId: 'ext111',
+			maintain: 0,
+			constructor:function(cfg) {
+				var conf = Ext.apply({},cfg);
+				console.log(conf);
+				com.info.Cust.superclass.constructor.call(this,conf);
+			},
+			initComponent:function(cfg) {
+				com.info.Cust.superclass.initComponent.call(this,cfg);
+			},
+			setSomething:function(handler) {
+				this.addListener('move', function() {
+					console.log("this reference to");
+					console.log(this);
+					handler(this.title);
+				});
+			},
+			setMaintain:function(m) {
+				this.maintain = m;
+			}
+		});
+		Ext.onReady(function() {
+			var littlebtn = new Ext.Button({
+				text:'lb',
+				width:50,
+				height:20,
+				handler:function() {
+					this.up('window').close();
+				}
+			});
+			var littleWin = new Ext.Window({
+				title:'little win',
+				width:100,
+				height:50
+			});
+			var btn = new Ext.Button({
+				text:'pop up',
+				width:50,
+				height:20,
+				handler:function() {
+					littleWin.show();
+				}
+			});
+			
+			var cust = new com.info.Cust({
+				title:'title',
+				width:500,
+				height:300,
+				items:[btn]
+			});
+			littleWin.addListener('close', function(){
+				console.log('origin listener');
+				this.close();
+			},cust);
+			littleWin.addListener('close', function() {
+				console.log('cover the origin listener');
+				this.close();
+			},cust);
+			
+			var handler = function(title) {
+				console.log(title);
+			};
+			cust.setSomething(handler);
+			cust.setMaintain(100);
+			cust.show();
+			var result = {total:6,data:[{changememo: 'change', changedate:'today'},{changememo:'change2', changedate:'yesterday'}]};
+			var number = 200;
+			var template = new Ext.XTemplate(
+				'<tpl for=".">',
+				'	<div>',
+				'		<span>{changememo}</span>&nbsp;&nbsp;',
+				'		<span>{changedate}</span>',
+				'		<span>',
+				'		</span>',
+				'	</div>',
+				'</tpl>',
+				'<div>',
+				number,
+				'</div>'
+			);
+			var dataview = new Ext.DataView({
+				renderTo:'div1',
+				emptyText:'<p>no data</p>',
+				tpl:template,
+			});
+			var datastore = new Ext.data.Store({
+				proxy:new Ext.data.MemoryProxy(result),
+				reader:new Ext.data.JsonReader({
+					root:'data',
+					totalProperty:'total',
+				},[
+					'changememo','changedate'
+				]),
+				autoLoad:true
+			});
+			console.log(datastore);
+			dataview.bindStore(datastore);
+		});
+
+	</script>
+	<div id="div1">100</div>
+</body>
+</html>

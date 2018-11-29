@@ -1,52 +1,45 @@
 /**
  * Customized Ext.grid.GridPanel for user details display
  */
-console.log("customized gridpanel loading");
-Ext.namespace("market.userdetails");
+Ext.namespace("com.info.market");
 
-market.userdetails.UserDetailsGrid = Ext.extend(Ext.grid.GridPanel, {
-	constructor: function(cfg) {
-		var url = rootPath+"/test/getuserdetailslist";
-		var fields = [{name:'id',type:'int'},'name','description'];
-		// Define row data model
-		/*var record = Ext.data.Record.create([
-			{name:'id',type:'int'},
-			{name:'name',type:'string'},
-			{name:'description',type:'string'}
-		]);*/
-		var jsonStore = new Ext.data.JsonStore({
-			autoDestroy:true,
-			url:url,
-			storeId:'userDetailsListStore',
-			root:'userDetails',
-			totalProperty:'userDetailsCount',
-			fields:fields
-		});
-		/*var store = new Ext.data.Store({
-			proxy:new Ext.data.HttpProxy(url),
-			reader:new Ext.data.ArrayReader({},record),
-			sortInfo:{field:'name',direction:'DESC'}
-		})*/
-		jsonStore.load();
-		// Define columns params
-		var columns = [{index:'id',header:'user id', sortable:true, dataIndex:'id'},
-				{header:'user name', dataIndex:'name'},
-				{header:'user description',dataIndex:'description'}];
-		var colModel = new Ext.grid.ColumnModel({
-			default:{
-				width:100,
-				sortable:false
-			},
-			columns:columns
-		});
-		// Set up a configuration
-		config = Ext.apply({
-			store: jsonStore,
-			colModel: colModel
-		}, cfg);
-		// Call super class constructor
-		market.userdetails.UserDetailsGrid.superclass.constructor.call(this, config);
-	}
+com.info.market.GridPanelTemplate = Ext.extend(Ext.grid.GridPanel, {
+    constructor: function(cfg) {
+        //Todo: add config params to cfg.jsonStoreConfig
+        var jsonStoreConfig = cfg.jsonStoreConfig;
+        console.log(jsonStoreConfig);
+        jsonStoreConfig['autoDestroy'] = true;
+        //jsonstore
+        var jsonStore = new Ext.data.JsonStore(cfg.jsonStoreConfig);
+        //define callback function of jsonstore after record loaded
+        jsonStore.load({
+            callback: function(r, options, success) {
+                if (success) {
+                	console.log(r);
+                    console.log("json recieved");
+                } else {
+                    alert("request failed");
+                }
+            }
+        });
+        //define colmodel of the gridpanel
+        var colModel = cfg.colModel;
+        // combine configurations
+        config = Ext.apply({store: jsonStore, colModel: colModel, selModel:new Ext.grid.RowSelectionModel({singleSelect:true, width:100})}, cfg);
+        // Call super class constructor, initialize the component with config
+        com.info.market.GridPanelTemplate.superclass.constructor.call(this, config);
+    },
+    /*接口，为gridpanel的selModel添加事件监听
+    * 参数：selectHandler, deSelectHandler
+    */
+    setSelectChangeHandler:function(selectHandler,deSelectHandler) {
+        this.getSelectionModel().addListener('rowSelect', function() {
+                console.log(this.getSelected());
+                selectHandler(this.getSelected().data.uid);
+            });
+        this.getSelectionModel().addListener('rowDeSelect', function(){
+            deSelectHandler();
+        });
+    }
 });
-Ext.reg('userdetailsgrid',market.userdetails.UserDetailsGrid);
-console.log("customized grid panel loaded");
+Ext.reg('gpaneltemplate', com.info.market.GridPanelTemplate);

@@ -15,16 +15,16 @@ import javax.persistence.Table;
  * OrderDetails entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "order_details", schema = "GGUSER")
+@Table(name = "ORDER_DETAILS", schema = "GGUSER")
 public class OrderDetails implements java.io.Serializable {
 
 	// Fields
 
-	private BigDecimal orid;
-	private GoodsDetails goodsDetails;
+	private BigDecimal orderId;
 	private UserDetails userDetails;
-	private Timestamp ortime;
-	private String ornotes;
+	private GoodsDetails goodsDetails;
+	private Timestamp orderTime;
+	private String orderNotes;
 
 	// Constructors
 
@@ -33,44 +33,34 @@ public class OrderDetails implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public OrderDetails(BigDecimal orid, Timestamp ortime) {
-		this.orid = orid;
-		this.ortime = ortime;
+	public OrderDetails(BigDecimal orderId, Timestamp orderTime) {
+		this.orderId = orderId;
+		this.orderTime = orderTime;
 	}
 
 	/** full constructor */
-	public OrderDetails(BigDecimal orid, GoodsDetails goodsDetails,
-			UserDetails userDetails, Timestamp ortime, String ornotes) {
-		this.orid = orid;
-		this.goodsDetails = goodsDetails;
+	public OrderDetails(BigDecimal orderId, UserDetails userDetails,
+			GoodsDetails goodsDetails, Timestamp orderTime, String orderNotes) {
+		this.orderId = orderId;
 		this.userDetails = userDetails;
-		this.ortime = ortime;
-		this.ornotes = ornotes;
+		this.goodsDetails = goodsDetails;
+		this.orderTime = orderTime;
+		this.orderNotes = orderNotes;
 	}
 
 	// Property accessors
 	@Id
-	@Column(name = "order_id", unique = true, nullable = false, precision = 38, scale = 0)
-	public BigDecimal getOrid() {
-		return this.orid;
+	@Column(name = "ORDER_ID", unique = true, nullable = false, precision = 38, scale = 0)
+	public BigDecimal getOrderId() {
+		return this.orderId;
 	}
 
-	public void setOrid(BigDecimal orid) {
-		this.orid = orid;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "gid")
-	public GoodsDetails getGoodsDetails() {
-		return this.goodsDetails;
-	}
-
-	public void setGoodsDetails(GoodsDetails goodsDetails) {
-		this.goodsDetails = goodsDetails;
+	public void setOrderId(BigDecimal orderId) {
+		this.orderId = orderId;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "uid")
+	@JoinColumn(name = "USER_ID")
 	public UserDetails getUserDetails() {
 		return this.userDetails;
 	}
@@ -79,23 +69,33 @@ public class OrderDetails implements java.io.Serializable {
 		this.userDetails = userDetails;
 	}
 
-	@Column(name = "order_time", nullable = false, length = 11)
-	public Timestamp getOrtime() {
-		return this.ortime;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "GOODS_ID")
+	public GoodsDetails getGoodsDetails() {
+		return this.goodsDetails;
 	}
 
-	public void setOrtime(Timestamp ortime) {
-		this.ortime = ortime;
+	public void setGoodsDetails(GoodsDetails goodsDetails) {
+		this.goodsDetails = goodsDetails;
+	}
+
+	@Column(name = "ORDER_TIME", nullable = false, length = 11)
+	public Timestamp getOrderTime() {
+		return this.orderTime;
+	}
+
+	public void setOrderTime(Timestamp orderTime) {
+		this.orderTime = orderTime;
 	}
 
 	@Lob
-	@Column(name = "order_notes")
-	public String getOrnotes() {
-		return this.ornotes;
+	@Column(name = "ORDER_NOTES")
+	public String getOrderNotes() {
+		return this.orderNotes;
 	}
 
-	public void setOrnotes(String ornotes) {
-		this.ornotes = ornotes;
+	public void setOrderNotes(String orderNotes) {
+		this.orderNotes = orderNotes;
 	}
 
 }

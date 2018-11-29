@@ -30,7 +30,7 @@
 		<script>
 			renderLoaded = function() {
 				console.log("page loaded");
-				}
+			}
 		</script>
 		<!--可继续写脚本用于设置ext的各种参数，以优化性能、美化界面、提高兼容性等-->
 		<!--还有包括一些公共变量-->
@@ -49,4 +49,17 @@
 	</body>
 	</html>
 	</#macro>
-			
+	
+	<#macro autoload cssList=[] jsList=[]>
+	<#global prefix="${request.contextPath}">
+	<#global iconPath="${prefix}/image/icon">
+	<#list cssList as cssName>
+		<link rel="stylesheet" type="text/css" href="${prefix}/css/${cssName}"/>
+	</#list>
+	<script>
+			<#list jsList as jsName>
+			document.write("<script id=\"${jsName}\" scr=\"${prefix}/js/${jsName}\"></script" + ">");
+			</#list>
+	</script>
+	<#nested/>
+	</#macro>

@@ -1,5 +1,6 @@
 package com.info.market.service;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 import com.info.market.dao.UserDetailsDao;
@@ -31,8 +32,10 @@ public class UserDetailsService {
 	public List getUserListWithoutOrderDetails() {
 		return userDetailsDao.getUserListWithoutOrderDetails();
 	}
-	public void addUser(String name, String description) {
-		System.out.println("this is the test info of FormatDataUtil");
-		System.out.println(FormatDataUtil.insertSpaceBeforeUpper(name));
+	public String addUser(String name, String description) {
+		return "";
+	}
+	public UserDetails getUserDetails(String uid) {
+		return userDetailsDao.getUserDetails(uid);
 	}
 }

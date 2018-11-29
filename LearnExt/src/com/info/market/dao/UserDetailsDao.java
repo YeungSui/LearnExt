@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import com.info.market.coding.ResultCodes;
 import com.info.market.format.FormatDataUtil;
 import com.info.market.model.GoodsDetails;
 import com.info.market.model.OrderDetails;
@@ -39,7 +40,7 @@ public class UserDetailsDao {
 	public List getUserList() {
 		List<UserDetails> userList = null;
 		try{
-			Query query = em.createQuery("select * from UserDetails order by uid desc");
+			Query query = em.createQuery("select u from UserDetails u order by uid desc", UserDetails.class);
 			userList = query.getResultList();
 			em.clear();
 		} catch(Exception e) {
@@ -49,13 +50,15 @@ public class UserDetailsDao {
 	}
 	/* 添加用户信息 */
 	public String addUserDetails(UserDetails ud) {
-		String result = "";
+		String result = null;
 		try {
 			em.persist(ud);
-			result = ud.getUid().toString();
+			result = ResultCodes.SUCCESS+":"+ud.getUserId().toString();
 			em.clear();
 		} catch(Exception e) {
 			e.printStackTrace();
+			result = ResultCodes.INSERT_FAILED+":Exception occurs";
+			return result;
 		}
 		return result;
 	}
@@ -78,5 +81,15 @@ public class UserDetailsDao {
 			user.setOrderDetailses(null);
 		}
 		return userList;
+	}
+	public UserDetails getUserDetails(String uid) {
+		System.out.println(uid);
+		Query query = em.createQuery("select u from UserDetails u where u.userId="+uid, UserDetails.class);
+		List<UserDetails> udList = query.getResultList();
+		if (udList.size() > 0) {
+			return udList.get(0);
+		} else {
+			return null;
+		}
 	}
 }
