@@ -2,13 +2,23 @@
 <div class="formOutline" style="height:500px">
 <div class="formTitle">${details.userName}</div>
 <div class="formTable">
+	<#assign keys=details?keys>
+	<#assign count=0>
+	<#assign total=0>
 	<div class="formBox Normal">
-		<div class="formLabel">ID</div><div class="formField" id="f_uid">${details.userId}</div>
-		<div class="formLabel">Name</div><div class="formField" id="f_uname">${details.userName}</div>
+		<#list keys as key>
+		<#assign total=total+1>
+		<#if details[key]?? && !details[key]?is_method>
+			<#assign count = count+1>
+		<div class="formLabel">${key?replace("user","")}</div>
+		<div class="formField" id="f_u${key?replace("user","")}">${details[key]}</div>
+			<#if count%2==0 || total==keys?size>
 	</div>
+			</#if>
+			<#if count%2==0 && total!=keys?size>
 	<div class="formBox Normal">
-		<div class="formLabel">Description</div><div class="formField" id="f_udecription">${details.userDescription}</div>
-		<div class="formLabel">Nation</div><div class="formField" id="f_unationality">${details.userNationality}</div>
-	</div>
+			</#if>
+		</#if>
+		</#list>
 </div>
 </@c.autoload>

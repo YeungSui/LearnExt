@@ -19,10 +19,10 @@
 					height:'auto',
 					title:'User Details',
 					colModel:new Ext.grid.ColumnModel([
-						new Ext.grid.RowNumberer({header:'No.', width:50}),
-						{header:'User Id', width:80, dataIndex:'userId', sortable:true, id:'userDetails'},
+						new Ext.grid.RowNumberer({header:'No.', width:80}),
+						{header:'User Id', width:100, dataIndex:'userId', sortable:true, id:'userDetails'},
 						{header:'User Name', width:200, dataIndex:'userName', sortable:false},
-						{header:'User Description', width:400, dataIndex:'userDescription', sortable:false}
+						{header:'User Description', width:500, dataIndex:'userDescription', sortable:false}
 					]),
 					store:new Ext.data.Store({
 						autoDestroy:true,
@@ -121,5 +121,5 @@
 					panel.setWidth(document.body.clientWidth);
 			}
 		});
-	</script>	
+	</script>
 </@c.shared>

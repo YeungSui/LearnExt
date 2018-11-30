@@ -49,16 +49,17 @@ public class UserDetailsDao {
 		return userList;
 	}
 	/* 添加用户信息 */
-	public String addUserDetails(UserDetails ud) {
-		String result = null;
+	public BigDecimal addUserDetails(UserDetails ud) {
+		BigDecimal result = null;
 		try {
 			em.persist(ud);
-			result = ResultCodes.SUCCESS+":"+ud.getUserId().toString();
+			em.flush();
+			em.detach(ud);
 			em.clear();
+			result = ud.getUserId();
 		} catch(Exception e) {
 			e.printStackTrace();
-			result = ResultCodes.INSERT_FAILED+":Exception occurs";
-			return result;
+			result = new BigDecimal(-1);
 		}
 		return result;
 	}

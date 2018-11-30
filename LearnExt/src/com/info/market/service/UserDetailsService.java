@@ -1,5 +1,7 @@
 package com.info.market.service;
 
+import java.math.BigDecimal;
+import java.rmi.server.UID;
 import java.sql.ResultSet;
 import java.util.List;
 
@@ -23,8 +25,10 @@ public class UserDetailsService {
 	@Autowired
 	private UserDetailsDao userDetailsDao;
 	
-	public void addUser(UserDetails ud) {
-		System.out.println("新增用户id: "+userDetailsDao.addUserDetails(ud));
+	public BigDecimal addUser(UserDetails ud) {
+		BigDecimal uid = userDetailsDao.addUserDetails(ud);
+		System.out.println("新增用户id: "+uid);
+		return uid;
 	}
 	public List getUserList() {
 		return userDetailsDao.getUserList();
